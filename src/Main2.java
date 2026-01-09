@@ -20,6 +20,7 @@ public class Main2 {
 
         JTextField usernameField = new JTextField(20);
         JPasswordField passwordField = new JPasswordField(20);
+        JLabel statusLabel = new JLabel();
         JButton loginButton = new JButton("Log In");
 
         usernameField.setMaximumSize(new Dimension(200, 30));
@@ -31,6 +32,7 @@ public class Main2 {
 
         panel.add(centerComponent(new JLabel("Password:")));
         panel.add(centerComponent(passwordField));
+        panel.add(centerComponent(statusLabel));
         panel.add(Box.createRigidArea(new Dimension(0, 30)));
 
         panel.add(centerComponent(loginButton));
@@ -41,10 +43,23 @@ public class Main2 {
         frame.setVisible(true);
 
         loginButton.addActionListener(e -> {
-            frame.getContentPane().removeAll();
-            createSearchView(frame);
-            frame.revalidate();
-            frame.repaint();
+            System.out.println("User: " + usernameField.getText());
+            System.out.println("Password: " + passwordField.getText());
+
+            String isValid = Authenticator.isValidUser(usernameField.getText(), passwordField.getText());
+
+            if (isValid.equals("valid")) {
+                frame.getContentPane().removeAll();
+                createSearchView(frame);
+                frame.revalidate();
+                frame.repaint();
+            } else if (isValid.equals("wrongPassword")) {
+                statusLabel.setText("Wrong password");
+            } else if (isValid.equals("invalidUser")) {
+                statusLabel.setText("User does not exist");
+            } else {
+                statusLabel.setText("Error");
+            }
         });
     }
 
