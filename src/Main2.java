@@ -78,12 +78,17 @@ public class Main2 {
         JPanel boxesContainer = new JPanel();
         boxesContainer.setLayout(new BoxLayout(boxesContainer, BoxLayout.Y_AXIS));
 
-        // Add three titled boxes
-        boxesContainer.add(createSampleBox("Results Box 1"));
-        boxesContainer.add(Box.createRigidArea(new Dimension(0, 15)));
-        boxesContainer.add(createSampleBox("Results Box 2"));
-        boxesContainer.add(Box.createRigidArea(new Dimension(0, 15)));
-        boxesContainer.add(createSampleBox("Results Box 3"));
+        try {
+            Book[] allBooks = new Library().getBooks();
+            for (Book b : allBooks) {
+                boxesContainer.add(createBookBox(b));
+                boxesContainer.add(Box.createRigidArea(new Dimension(0, 15)));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 
         JScrollPane scrollPane = new JScrollPane(boxesContainer);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -104,6 +109,21 @@ public class Main2 {
         boxPanel.add(new JLabel("Sample Line 3"));
         boxPanel.add(new JLabel("Sample Line 4"));
         boxPanel.add(new JLabel("Sample Line 5"));
+
+        return boxPanel;
+    }
+
+    private JPanel createBookBox(Book book) {
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
+
+        boxPanel.setBorder(BorderFactory.createTitledBorder(book.getTitle()));
+
+        boxPanel.add(new JLabel("Författare: " + book.getAuthor()));
+        boxPanel.add(new JLabel("Genre: " + book.getGenre()));
+        boxPanel.add(new JLabel("ISBN: " + book.getISBN()));
+
+        boxPanel.setMaximumSize(new Dimension(550, 120));
 
         return boxPanel;
     }

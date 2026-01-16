@@ -11,11 +11,25 @@ public class Library {
     public Book[] getBooks() throws Exception {
         String content = loadText();
         String[] lines = content.split("\n");
+        this.books = new Book[lines.length];
 
-        for (String line : lines) {
-            String[] parts = line.split("\\|");
+        for (int i = 0; i < lines.length; i++) {
+            if (lines[i].trim().isEmpty()) continue;
+
+            String[] parts = lines[i].split("\\|");
+            Book b = new Book();
+
+            for (String part : parts) {
+                String[] details = part.split(":");
+
+                if (details[0].contains("Title")) b.setTitle(details[1].trim());
+                if (details[0].contains("Author")) b.setAuthor(details[1].trim());
+                if (details[0].contains("Language")) b.setGenre(details[1].trim());
+                if (details[0].contains("ISBN")) b.setISBN(details[1].trim());
+            }
+
+            this.books[i] = b;
         }
-
         return books;
     }
 
