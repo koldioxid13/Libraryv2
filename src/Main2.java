@@ -6,14 +6,18 @@ import java.util.List;
 public class Main2 {
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Main2().createLoginView());
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("Library System");
+            frame.setSize(600, 1000);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setLocationRelativeTo(null);
+
+            new Main2().createLoginView(frame);
+        });
     }
 
-    private void createLoginView() {
-        JFrame frame = new JFrame("Login Window");
-        frame.setSize(600, 1000);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+    private void createLoginView(JFrame frame) {
+        frame.getContentPane().removeAll();
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -25,7 +29,7 @@ public class Main2 {
         JLabel statusLabel = new JLabel();
         JButton loginButton = new JButton("Log In");
 
-        JButton goToRegisterButton = new JButton("Skapa konto");
+        JButton goToRegisterButton = new JButton("Create account");
         panel.add(centerComponent(goToRegisterButton));
         goToRegisterButton.addActionListener(e -> {
             createRegisterView(frame);
@@ -49,6 +53,10 @@ public class Main2 {
 
         frame.add(panel);
         frame.setVisible(true);
+
+        frame.add(panel);
+        frame.revalidate();
+        frame.repaint();
 
         loginButton.addActionListener(e -> {
             System.out.println("User: " + usernameField.getText());
@@ -81,18 +89,18 @@ public class Main2 {
 
         JTextField usernameField = new JTextField(20);
         JPasswordField passwordField = new JPasswordField(20);
-        JLabel statusLabel = new JLabel("Fyll i uppgifter för att registrera dig");
-        JButton registerButton = new JButton("Registrera");
-        JButton backButton = new JButton("Tillbaka");
+        JLabel statusLabel = new JLabel("Write stuff");
+        JButton registerButton = new JButton("Register");
+        JButton backButton = new JButton("Back");
 
         usernameField.setMaximumSize(new Dimension(200, 30));
         passwordField.setMaximumSize(new Dimension(200, 30));
 
-        panel.add(centerComponent(new JLabel("Nytt Användarnamn:")));
+        panel.add(centerComponent(new JLabel("New username:")));
         panel.add(centerComponent(usernameField));
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        panel.add(centerComponent(new JLabel("Nytt Lösenord:")));
+        panel.add(centerComponent(new JLabel("New password:")));
         panel.add(centerComponent(passwordField));
         panel.add(centerComponent(statusLabel));
         panel.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -113,15 +121,20 @@ public class Main2 {
             String pass = new String(passwordField.getPassword());
 
             if (name.isEmpty() || pass.isEmpty()) {
-                statusLabel.setText("Inga tomma fält!");
+                statusLabel.setText("No empty!");
             } else {
                 User newUser = new User(name, pass);
                 UserManager userManager = new UserManager();
                 userManager.saveUser(newUser);
 
-                statusLabel.setText("Användare sparad");
+                statusLabel.setText("User saved");
             }
         });
+
+        backButton.addActionListener(e -> {
+            createLoginView(frame);
+        });
+
     }
 
     private void createSearchView(JFrame frame) {
