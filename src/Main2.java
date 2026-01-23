@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main2 {
 
@@ -74,6 +76,7 @@ public class Main2 {
         topPanel.add(searchField);
         topPanel.add(searchButton);
 
+
         // Center scrollable area for the 3 boxes
         JPanel boxesContainer = new JPanel();
         boxesContainer.setLayout(new BoxLayout(boxesContainer, BoxLayout.Y_AXIS));
@@ -87,6 +90,23 @@ public class Main2 {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        Search bookService = new Search();
+
+        searchButton.addActionListener(e -> {
+            String query = searchField.getText();
+
+            List<Book> results = bookService.searchBooks(query);
+            boxesContainer.removeAll();
+            for (Book b : results) {
+                boxesContainer.add(createBookBox(b));
+                boxesContainer.add(Box.createRigidArea(new Dimension(0, 15)));
+            }
+
+            boxesContainer.revalidate();
+            boxesContainer.repaint();
+        });
 
 
 

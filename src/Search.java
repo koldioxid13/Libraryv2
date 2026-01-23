@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Search {
+    //Den hämtar alla böcker igen, det borde den inte göra
     private Library library = new Library();
 
     public List<Book> searchBooks(String query) {
