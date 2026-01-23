@@ -134,6 +134,4 @@ public class Main2 {
         wrapper.add(comp);
         return wrapper;
     }
-
-    private void Search()
 }
