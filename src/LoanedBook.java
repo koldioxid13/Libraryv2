@@ -35,4 +35,11 @@ public class LoanedBook {
     public void setBook(Book book) {
         this.book = book;
     }
+
+    public String toFileFormat() {
+        return "User:" + user.getUserName() +
+                " | Date:" + loanDate +
+                " | Book:" + book.getTitle() +
+                " | ISBN:" + book.getISBN();
+    }
 }
