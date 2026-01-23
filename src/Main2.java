@@ -25,6 +25,12 @@ public class Main2 {
         JLabel statusLabel = new JLabel();
         JButton loginButton = new JButton("Log In");
 
+        JButton goToRegisterButton = new JButton("Skapa konto");
+        panel.add(centerComponent(goToRegisterButton));
+        goToRegisterButton.addActionListener(e -> {
+            createRegisterView(frame);
+        });
+
         usernameField.setMaximumSize(new Dimension(200, 30));
         passwordField.setMaximumSize(new Dimension(200, 30));
 
@@ -61,6 +67,59 @@ public class Main2 {
                 statusLabel.setText("User does not exist");
             } else {
                 statusLabel.setText("Error");
+            }
+        });
+    }
+
+    private void createRegisterView(JFrame frame) {
+        frame.getContentPane().removeAll();
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        panel.add(Box.createVerticalGlue());
+
+        JTextField usernameField = new JTextField(20);
+        JPasswordField passwordField = new JPasswordField(20);
+        JLabel statusLabel = new JLabel("Fyll i uppgifter för att registrera dig");
+        JButton registerButton = new JButton("Registrera");
+        JButton backButton = new JButton("Tillbaka");
+
+        usernameField.setMaximumSize(new Dimension(200, 30));
+        passwordField.setMaximumSize(new Dimension(200, 30));
+
+        panel.add(centerComponent(new JLabel("Nytt Användarnamn:")));
+        panel.add(centerComponent(usernameField));
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        panel.add(centerComponent(new JLabel("Nytt Lösenord:")));
+        panel.add(centerComponent(passwordField));
+        panel.add(centerComponent(statusLabel));
+        panel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+        panel.add(centerComponent(registerButton));
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(centerComponent(backButton));
+
+        panel.add(Box.createVerticalGlue());
+
+        frame.add(panel);
+
+        frame.revalidate();
+        frame.repaint();
+
+        registerButton.addActionListener(e -> {
+            String name = usernameField.getText();
+            String pass = new String(passwordField.getPassword());
+
+            if (name.isEmpty() || pass.isEmpty()) {
+                statusLabel.setText("Inga tomma fält!");
+            } else {
+                User newUser = new User(name, pass);
+                UserManager userManager = new UserManager();
+                userManager.saveUser(newUser);
+
+                statusLabel.setText("Användare sparad");
             }
         });
     }
