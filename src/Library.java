@@ -24,7 +24,9 @@ public class Library {
 
                 if (details[0].contains("Title")) b.setTitle(details[1].trim());
                 if (details[0].contains("Author")) b.setAuthor(details[1].trim());
-                if (details[0].contains("Language")) b.setGenre(details[1].trim());
+                if (details[0].contains("Pages")) b.setPages(details[1].trim());
+                if (details[0].contains("Language")) b.setLanguage(details[1].trim());
+                if (details[0].contains("Year")) b.setYear(details[1].trim());
                 if (details[0].contains("ISBN")) b.setISBN(details[1].trim());
             }
 

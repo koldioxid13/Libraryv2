@@ -2,8 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+
+import static java.time.LocalTime.now;
 
 public class Main2 {
+    private User currentUser;
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -65,16 +69,17 @@ public class Main2 {
             String isValid = Authenticator.isValidUser(usernameField.getText(), passwordField.getText());
 
             if (isValid.equals("valid")) {
+                currentUser = new User(usernameField.getText(), passwordField.getText());
                 frame.getContentPane().removeAll();
                 createSearchView(frame);
                 frame.revalidate();
                 frame.repaint();
             } else if (isValid.equals("wrongPassword")) {
-                statusLabel.setText("Wrong password");
+                setStatus("Wrong password", statusLabel);
             } else if (isValid.equals("invalidUser")) {
-                statusLabel.setText("User does not exist");
+                setStatus("User does not exist", statusLabel);
             } else {
-                statusLabel.setText("Error");
+                setStatus("Error", statusLabel);
             }
         });
     }
@@ -121,13 +126,13 @@ public class Main2 {
             String pass = new String(passwordField.getPassword());
 
             if (name.isEmpty() || pass.isEmpty()) {
-                statusLabel.setText("No empty!");
+                setStatus("Username cannot be empty!", statusLabel);
             } else {
                 User newUser = new User(name, pass);
                 UserManager userManager = new UserManager();
                 userManager.saveUser(newUser);
 
-                statusLabel.setText("User saved");
+                setStatus("User saved", statusLabel);
             }
         });
 
@@ -211,13 +216,40 @@ public class Main2 {
 
         boxPanel.setBorder(BorderFactory.createTitledBorder(book.getTitle()));
 
-        boxPanel.add(new JLabel("Författare: " + book.getAuthor()));
-        boxPanel.add(new JLabel("Genre: " + book.getGenre()));
-        boxPanel.add(new JLabel("ISBN: " + book.getISBN()));
+        JButton loanButton = new JButton("Loan book");
+        JLabel statusLabel = new JLabel();
 
-        boxPanel.setMaximumSize(new Dimension(550, 120));
+        boxPanel.add(new JLabel("Author: " + book.getAuthor()));
+        boxPanel.add(new JLabel("Pages: " + book.getPages()));
+        boxPanel.add(new JLabel("Language: " + book.getLanguage()));
+        boxPanel.add(new JLabel("Year: " + book.getYear()));
+        boxPanel.add(new JLabel("ISBN: " + book.getISBN()));
+        boxPanel.add(loanButton);
+        boxPanel.add(statusLabel);
+
+        loanButton.addActionListener(e -> {
+            LoanedBook newLoan = new LoanedBook(currentUser, LocalDate.now().toString(), 7.0, book);
+            Loan loan = new Loan();
+            loan.saveLoan(newLoan);
+            setStatus("Loaned book!", statusLabel);
+        });
+
+        boxPanel.setMaximumSize(new Dimension(550, 150));
 
         return boxPanel;
+    }
+
+    private void setStatus(String statusText, JLabel statusLabel) {
+        statusLabel.setText(statusText);
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        statusLabel.setText(null);
+                    }
+                },
+                3000
+        );
     }
 
     // Utility to horizontally center components

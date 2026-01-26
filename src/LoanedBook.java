@@ -4,6 +4,16 @@ public class LoanedBook {
     private Double timeLeft;
     private Book book;
 
+    public LoanedBook(User user, String loanDate, Double timeLeft, Book book) {
+        this.user = user;
+        this.loanDate = loanDate;
+        this.timeLeft = timeLeft;
+        this.book = book;
+    }
+
+    public LoanedBook() {
+    }
+
     public User getUser() {
         return user;
     }

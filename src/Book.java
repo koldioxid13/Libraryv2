@@ -1,7 +1,7 @@
 public class Book {
     private String title;
     private String author;
-    private String genre;
+    private String language;
     private String pages;
     private String year;
     private String ISBN;
@@ -22,12 +22,12 @@ public class Book {
         this.author = author;
     }
 
-    public String getGenre() {
-        return genre;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getPages() {
