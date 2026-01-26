@@ -28,12 +28,12 @@ public class Loan {
             for (String part : parts) {
                 String[] details = part.split(":");
 
-                if (details[0].contains("User")) b.setUser(new User(details[1].trim(), details[2].trim()));
-                if (details[0].contains("LoanDate")) b.setLoanDate(details[1].trim());
-                if (details[0].contains("TimeLeft")) b.setTimeLeft(Double.parseDouble(details[1].trim()));
+                if (details[0].contains("User")) b.setUser(new User(details[1].trim()));
+                if (details[0].contains("Date")) b.setLoanDate(details[1].trim());
+                if (details[0].contains("Time")) b.setTimeLeft(Double.parseDouble(details[1].trim()));
                 if (details[0].contains("Book")) {
                     List<Book> results = bookService.searchBooks(details[1].trim());
-                    b.setBook(results.get(0));
+                    b.setBook(results.getFirst());
                 }
             }
 

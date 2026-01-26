@@ -94,7 +94,7 @@ public class Main2 {
 
         JButton logoutButton = new JButton("Log Out");
         JButton searchButton = new JButton("Search for books");
-        JButton loansButton = new JButton("See your loans");
+        JButton loansButton = new JButton("My loans");
 
         logoutButton.addActionListener(e -> {
             currentUser = null;
@@ -107,9 +107,13 @@ public class Main2 {
             frame.repaint();
         });
         loansButton.addActionListener(e -> {
-            System.out.println("yo");
+            frame.getContentPane().removeAll();
+            createLoanView(frame);
+            frame.revalidate();
+            frame.repaint();
         });
 
+        panel.add(centerComponent(new JLabel("Logged in as: " + currentUser.getUserName())));
         panel.add(centerComponent(searchButton));
         panel.add(centerComponent(loansButton));
         panel.add(centerComponent(logoutButton));
@@ -135,7 +139,7 @@ public class Main2 {
 
         JTextField usernameField = new JTextField(20);
         JPasswordField passwordField = new JPasswordField(20);
-        JLabel statusLabel = new JLabel("Write stuff");
+        JLabel statusLabel = new JLabel();
         JButton registerButton = new JButton("Register");
         JButton backButton = new JButton("Back");
 
@@ -241,6 +245,50 @@ public class Main2 {
         frame.add(panel);
     }
 
+    private void createLoanView(JFrame frame){
+        JPanel loanPanel = new JPanel();
+        loanPanel.setLayout(new BorderLayout());
+
+        JPanel headerPanel = new JPanel();
+        JLabel titleText = new JLabel();
+        titleText.setText("MY LOANS");
+
+        JButton backButton = new JButton("Back");
+
+        headerPanel.add(backButton);
+        headerPanel.add(titleText);
+
+        JPanel boxesContainer = new JPanel();
+        boxesContainer.setLayout(new BoxLayout(boxesContainer, BoxLayout.Y_AXIS));
+
+        try {
+            LoanedBook[] loanedBooks = new Loan().getloans();
+            for (LoanedBook b : loanedBooks) {
+                if (b.getUser().getUserName().equals(currentUser.getUserName())) {
+                    boxesContainer.add(createLoanedBox(b));
+                    boxesContainer.add(Box.createRigidArea(new Dimension(0, 15)));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JScrollPane scrollPane = new JScrollPane(boxesContainer);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        loanPanel.add(headerPanel, BorderLayout.NORTH);
+        loanPanel.add(scrollPane, BorderLayout.CENTER);
+
+        frame.add(loanPanel);
+
+        backButton.addActionListener(e -> {
+            frame.getContentPane().removeAll();
+            createLoggedInView(frame);
+            frame.revalidate();
+            frame.repaint();
+        });
+    }
+
     private JPanel createSampleBox(String title) {
         JPanel boxPanel = new JPanel();
         boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
@@ -277,6 +325,30 @@ public class Main2 {
             Loan loan = new Loan();
             loan.saveLoan(newLoan);
             setStatus("Loaned book!", statusLabel);
+        });
+
+        boxPanel.setMaximumSize(new Dimension(550, 150));
+
+        return boxPanel;
+    }
+
+    private JPanel createLoanedBox(LoanedBook loanedBook) {
+        JPanel boxPanel = new JPanel();
+        boxPanel.setLayout(new BoxLayout(boxPanel, BoxLayout.Y_AXIS));
+
+        boxPanel.setBorder(BorderFactory.createTitledBorder(loanedBook.getBook().getTitle()));
+
+        JButton returnButton = new JButton("Return book");
+        JLabel statusLabel = new JLabel();
+
+        boxPanel.add(new JLabel("Loan date: " + loanedBook.getLoanDate()));
+        boxPanel.add(new JLabel("Time left: " + loanedBook.getTimeLeft()));
+        boxPanel.add(new JLabel("ISBN: " + loanedBook.getBook().getISBN()));
+        boxPanel.add(returnButton);
+        boxPanel.add(statusLabel);
+
+        returnButton.addActionListener(e -> {
+            setStatus("Returned book!", statusLabel);
         });
 
         boxPanel.setMaximumSize(new Dimension(550, 150));

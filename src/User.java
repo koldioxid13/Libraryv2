@@ -7,6 +7,10 @@ public class User {
         this.password = password;
     }
 
+    public User(String userName) { // When you don't want to store the password
+        this.userName = userName;
+    }
+
     public String getUserName() {
         return userName;
     }
