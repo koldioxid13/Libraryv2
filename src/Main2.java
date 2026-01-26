@@ -71,7 +71,7 @@ public class Main2 {
             if (isValid.equals("valid")) {
                 currentUser = new User(usernameField.getText(), passwordField.getText());
                 frame.getContentPane().removeAll();
-                createSearchView(frame);
+                createLoggedInView(frame);
                 frame.revalidate();
                 frame.repaint();
             } else if (isValid.equals("wrongPassword")) {
@@ -82,6 +82,47 @@ public class Main2 {
                 setStatus("Error", statusLabel);
             }
         });
+    }
+
+    private void createLoggedInView(JFrame frame) {
+        frame.getContentPane().removeAll();
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+        panel.add(Box.createVerticalGlue());
+
+        JButton logoutButton = new JButton("Log Out");
+        JButton searchButton = new JButton("Search for books");
+        JButton loansButton = new JButton("See your loans");
+
+        logoutButton.addActionListener(e -> {
+            currentUser = null;
+            createLoginView(frame);
+        });
+        searchButton.addActionListener(e -> {
+            frame.getContentPane().removeAll();
+            createSearchView(frame);
+            frame.revalidate();
+            frame.repaint();
+        });
+        loansButton.addActionListener(e -> {
+            System.out.println("yo");
+        });
+
+        panel.add(centerComponent(searchButton));
+        panel.add(centerComponent(loansButton));
+        panel.add(centerComponent(logoutButton));
+
+
+        panel.add(Box.createVerticalGlue());
+
+        frame.add(panel);
+        frame.setVisible(true);
+
+        frame.add(panel);
+        frame.revalidate();
+        frame.repaint();
     }
 
     private void createRegisterView(JFrame frame) {
@@ -150,6 +191,8 @@ public class Main2 {
         JPanel topPanel = new JPanel();
         JTextField searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
+        JButton backButton = new JButton("Back");
+        topPanel.add(backButton);
         topPanel.add(searchField);
         topPanel.add(searchButton);
 
@@ -185,7 +228,9 @@ public class Main2 {
             boxesContainer.repaint();
         });
 
-
+        backButton.addActionListener(e -> {
+            createLoggedInView(frame);
+        });
 
         JScrollPane scrollPane = new JScrollPane(boxesContainer);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

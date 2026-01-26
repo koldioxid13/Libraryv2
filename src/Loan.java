@@ -42,16 +42,17 @@ public class Loan {
         return loans;
     }
 
-    public void saveLoan(LoanedBook loanedBook) {
+    public void saveLoan(LoanedBook loan) {
         try {
-            String loanedLine = loanedBook.getUser().getUserName() + "|" + loanedBook.getLoanDate() + "|" + loanedBook.getTimeLeft() + "|" + loanedBook.getBook().getTitle() + System.lineSeparator();
+            String line = loan.toFileFormat() + System.lineSeparator();
 
             Files.write(
                     Paths.get(LOAN_FILE),
-                    loanedLine.getBytes(),
+                    line.getBytes(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
             );
+            System.out.println("Lånet sparades i " + LOAN_FILE);
         } catch (IOException e) {
             e.printStackTrace();
         }

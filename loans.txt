@@ -1,2 +1,5 @@
-user|2026-01-26|7.0|The Chronos Directive
-user|2026-01-26|7.0|Whispers of the Forgotten Isle
+User:knut | Date:2026-01-26 | Time:7.0 | Book:Whispers of the Forgotten Isle | ISBN:978-0399593457
+User:knut | Date:2026-01-26 | Time:7.0 | Book:Silicon Shadows | ISBN:978-1984801939
+User:knut | Date:2026-01-26 | Time:7.0 | Book:The Chronos Directive | ISBN:978-1548765432
+User:user | Date:2026-01-26 | Time:7.0 | Book:Whispers of the Forgotten Isle | ISBN:978-0399593457
+User:knut | Date:2026-01-26 | Time:7.0 | Book:Silicon Shadows | ISBN:978-1984801939

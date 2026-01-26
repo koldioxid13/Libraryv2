@@ -49,6 +49,7 @@ public class LoanedBook {
     public String toFileFormat() {
         return "User:" + user.getUserName() +
                 " | Date:" + loanDate +
+                " | Time:" + timeLeft +
                 " | Book:" + book.getTitle() +
                 " | ISBN:" + book.getISBN();
     }
