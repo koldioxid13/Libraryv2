@@ -1,10 +1,2 @@
-User:knut | Date:2026-01-26 | Time:7.0 | Book:Whispers of the Forgotten Isle | ISBN:978-0399593457
-User:knut | Date:2026-01-26 | Time:7.0 | Book:Silicon Shadows | ISBN:978-1984801939
-User:knut | Date:2026-01-26 | Time:7.0 | Book:The Chronos Directive | ISBN:978-1548765432
-User:user | Date:2026-01-26 | Time:7.0 | Book:Whispers of the Forgotten Isle | ISBN:978-0399593457
-User:knut | Date:2026-01-26 | Time:7.0 | Book:Silicon Shadows | ISBN:978-1984801939
-User:user | Date:2026-01-26 | Time:7.0 | Book:The Chronos Directive | ISBN:978-1548765432
-User:user | Date:2026-01-26 | Time:7.0 | Book:Beneath the Scarlet Moon | ISBN:978-1338878925
-User:user | Date:2026-01-26 | Time:7.0 | Book:Silicon Shadows | ISBN:978-1984801939
-User:user | Date:2026-01-26 | Time:7.0 | Book:Beneath the Scarlet Moon | ISBN:978-1338878925
-User:user | Date:2026-01-26 | Time:7.0 | Book:The Last Cartographer | ISBN:978-1984819262
+User:knut | Date:2026-01-30 | Time:7.0 | Book:Whispers of the Forgotten Isle | ISBN:978-0399593457
+User:knut | Date:2026-01-30 | Time:7.0 | Book:Silicon Shadows | ISBN:978-1984801939

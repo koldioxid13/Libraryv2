@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +13,7 @@ public class Loan {
         return Files.readString(Path.of(LOAN_FILE));
     }
 
-    public LoanedBook[] getloans() throws Exception {
+    public LoanedBook[] getLoans() throws Exception {
         String content = loadText();
         String[] lines = content.split("\n");
         this.loans = new LoanedBook[lines.length];
@@ -42,8 +42,19 @@ public class Loan {
         return loans;
     }
 
-    public void saveLoan(LoanedBook loan) {
+    public boolean saveLoan(LoanedBook loan) {
         try {
+            BufferedReader reader = new BufferedReader(new FileReader(LOAN_FILE));
+            String currentLine;
+            while((currentLine = reader.readLine()) != null) {
+                // trim newline when comparing with lineToRemove
+                String trimmedLine = currentLine.trim();
+                if(trimmedLine.contains(loan.getUser().getUserName()) && trimmedLine.contains(loan.getBook().getTitle())) {
+                    reader.close();
+                    return false;
+                }
+            }
+            reader.close();
             String line = loan.toFileFormat() + System.lineSeparator();
 
             Files.write(
@@ -55,6 +66,37 @@ public class Loan {
             System.out.println("Lånet sparades i " + LOAN_FILE);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+        return true;
+    }
+
+    public void returnLoan(LoanedBook loan) {
+        try {
+            File inputFile = new File(LOAN_FILE);
+            File tempFile = new File("temp_loans.txt");
+
+            BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+
+            String currentLine;
+
+            while((currentLine = reader.readLine()) != null) {
+                // trim newline when comparing with lineToRemove
+                String trimmedLine = currentLine.trim();
+                if(trimmedLine.contains(loan.getUser().getUserName()) && trimmedLine.contains(loan.getBook().getTitle())) continue;
+                writer.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer.close();
+            reader.close();
+            if (inputFile.delete()) {
+                if (tempFile.renameTo(inputFile)){
+                    System.out.println("Lånet togs bort från " + LOAN_FILE);
+                }
+            } else {
+                System.out.println("Error");
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

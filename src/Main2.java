@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.time.LocalTime.now;
 
@@ -262,7 +262,7 @@ public class Main2 {
         boxesContainer.setLayout(new BoxLayout(boxesContainer, BoxLayout.Y_AXIS));
 
         try {
-            LoanedBook[] loanedBooks = new Loan().getloans();
+            LoanedBook[] loanedBooks = new Loan().getLoans();
             for (LoanedBook b : loanedBooks) {
                 if (b.getUser().getUserName().equals(currentUser.getUserName())) {
                     boxesContainer.add(createLoanedBox(b));
@@ -309,7 +309,7 @@ public class Main2 {
 
         boxPanel.setBorder(BorderFactory.createTitledBorder(book.getTitle()));
 
-        JButton loanButton = new JButton("Loan book");
+        JButton loanButton = new JButton("Borrow book");
         JLabel statusLabel = new JLabel();
 
         boxPanel.add(new JLabel("Author: " + book.getAuthor()));
@@ -323,8 +323,13 @@ public class Main2 {
         loanButton.addActionListener(e -> {
             LoanedBook newLoan = new LoanedBook(currentUser, LocalDate.now().toString(), 7.0, book);
             Loan loan = new Loan();
-            loan.saveLoan(newLoan);
-            setStatus("Loaned book!", statusLabel);
+            if (loan.saveLoan(newLoan)) {
+                setStatus("Borrowed book!", statusLabel);
+                loanButton.setEnabled(false);
+            } else {
+                setStatus("Book already borrowed", statusLabel);
+                loanButton.setEnabled(false);
+            }
         });
 
         boxPanel.setMaximumSize(new Dimension(550, 150));
@@ -348,7 +353,10 @@ public class Main2 {
         boxPanel.add(statusLabel);
 
         returnButton.addActionListener(e -> {
+            Loan loan = new Loan();
+            loan.returnLoan(loanedBook);
             setStatus("Returned book!", statusLabel);
+            returnButton.setEnabled(false);
         });
 
         boxPanel.setMaximumSize(new Dimension(550, 150));
