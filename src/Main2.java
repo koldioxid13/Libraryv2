@@ -175,9 +175,15 @@ public class Main2 {
             } else {
                 User newUser = new User(name, pass);
                 UserManager userManager = new UserManager();
-                userManager.saveUser(newUser);
 
-                setStatus("User saved", statusLabel);
+                boolean success = userManager.saveUser(newUser);
+
+                if (success) {
+                    setStatus("User saved", statusLabel);
+                } else {
+                    setStatus("Username already taken", statusLabel);
+                }
+
             }
         });
 
